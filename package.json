@@ -1,0 +1,26 @@
+{
+  "name": "desafiotunts",
+  "version": "1.0.0",
+  "description": "TuntsChallenge",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GustavoMFS/DesafioTunts.git"
+  },
+  "author": "GustavoMFSantos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GustavoMFS/DesafioTunts/issues"
+  },
+  "homepage": "https://github.com/GustavoMFS/DesafioTunts#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "googleapis": "^131.0.0",
+    "nodemon": "^3.0.3"
+  }
+}
