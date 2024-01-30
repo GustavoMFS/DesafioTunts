@@ -1,12 +1,12 @@
 import { google } from "googleapis";
 import { getAuthSheets } from "../controllers/auth.js";
 
-function calculateSituationAndFinalGrade(grades, attendance, totalClassesCell) {
+function calculateSituation(grades, attendance, totalClasses) {
     const average = (grades.P1 + grades.P2 + grades.P3) / 3;
     let situation, finalGrade;
 
-    if (typeof totalClassesCell === 'string') {
-        const totalClassesMatch = totalClassesCell.match(/(\d+)/);
+    if (typeof totalClasses === 'string') {
+        const totalClassesMatch = totalClasses.match(/(\d+)/);
 
         if (totalClassesMatch && totalClassesMatch.length > 1) {
             const totalClasses = parseInt(totalClassesMatch[1], 10);
@@ -75,7 +75,7 @@ export async function processSpreadsheet() {
             range: 'A2',
         });
 
-        const totalClassesCell = totalClassesResponse.data.values[0][0];
+        const totalClasses = totalClassesResponse.data.values[0][0];
 
         const response = await googleSheets.spreadsheets.values.get({
             auth,
@@ -97,17 +97,16 @@ export async function processSpreadsheet() {
 
                 const attendance = parseFloat(row[2]);
 
-                const { situation, finalGrade } = calculateSituationAndFinalGrade(grades, attendance, totalClassesCell);
+                const { situation, finalGrade } = calculateSituation(grades, attendance, totalClasses);
 
                 row[6] = situation;
                 row[7] = finalGrade;
 
-                console.log(`Student: ${row[1]}, Situation: ${situation}, Final Grade: ${finalGrade}`);
             }
 
             await updateSpreadsheet(auth, spreadsheetId, values);
 
-            console.log("Spreadsheet updated successfully!");
+            console.log("Spreadsheet processed and updated successfully!");
         } else {
             console.log("No data found in the spreadsheet.");
         }

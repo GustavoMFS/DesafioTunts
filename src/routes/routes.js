@@ -4,7 +4,7 @@ import * as spreadsheetController from '../controllers/SpreadsheetController.js'
 
 const router = new Router();
 
-router.get('/metadata', spreadsheetController.processSpreadsheet);
+router.get('/data', spreadsheetController.processSpreadsheet);
 router.get('/auth', authController.getAuth);
 
 export default router;

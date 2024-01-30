@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "nodemon src/index.js",
+    "update-sheet": "node src/controllers/updateSheet.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
