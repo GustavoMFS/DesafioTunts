@@ -23,7 +23,7 @@ async function getAuthSheets() {
     };
 }
 
-export { getAuthSheets };  // Corrija esta linha
+export { getAuthSheets };
 
 const authController = {
     getAuthSheets: getAuthSheets,

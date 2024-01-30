@@ -1,10 +1,8 @@
 import { google } from "googleapis";
 import { getAuthSheets } from "../controllers/auth.js";
 
-// Function to calculate the situation and final grade
 function calculateSituationAndFinalGrade(grades, attendance, totalClassesCell) {
     const average = (grades.P1 + grades.P2 + grades.P3) / 3;
-
     let situation, finalGrade;
 
     if (typeof totalClassesCell === 'string') {
@@ -16,17 +14,14 @@ function calculateSituationAndFinalGrade(grades, attendance, totalClassesCell) {
             if (!isNaN(totalClasses)) {
                 if (attendance > totalClasses * 0.25) {
                     situation = "Reprovado por Falta";
-                    finalGrade = 0;
                 } else {
-                    if (average < 5) {
+                    if (average < 50) {
                         situation = "Reprovado por Nota";
-                        finalGrade = 0;
-                    } else if (average < 7) {
+                    } else if (average < 70) {
                         situation = "Exame Final";
                         finalGrade = calculateFinalGrade(average);
                     } else {
                         situation = "Aprovado";
-                        finalGrade = 0;
                     }
                 }
 
@@ -45,19 +40,17 @@ function calculateSituationAndFinalGrade(grades, attendance, totalClassesCell) {
     };
 }
 
-// Function to calculate the final grade
 function calculateFinalGrade(average) {
-    const naf = 10 - average;
-    return Math.max(5, (average + naf) / 2);
+    const naf = 100 - average;
+    return Math.max(0, naf);
 }
 
-// Function to update the spreadsheet with calculated information
 async function updateSpreadsheet(auth, spreadsheetId, data) {
     const sheets = google.sheets({ version: 'v4', auth });
 
     const updateData = {
         spreadsheetId,
-        range: 'A2:H', // Assuming the data starts from row 2 and there's no limit to the number of rows
+        range: 'A4:H',
         valueInputOption: 'RAW',
         resource: {
             values: data,
@@ -72,7 +65,6 @@ async function updateSpreadsheet(auth, spreadsheetId, data) {
     }
 }
 
-// Main function to process the spreadsheet
 export async function processSpreadsheet() {
     try {
         const { googleSheets, auth, spreadsheetId } = await getAuthSheets();
@@ -80,7 +72,7 @@ export async function processSpreadsheet() {
         const totalClassesResponse = await googleSheets.spreadsheets.values.get({
             auth,
             spreadsheetId,
-            range: 'A2', // Assuming the total number of classes is in cell A2
+            range: 'A2',
         });
 
         const totalClassesCell = totalClassesResponse.data.values[0][0];
@@ -88,7 +80,7 @@ export async function processSpreadsheet() {
         const response = await googleSheets.spreadsheets.values.get({
             auth,
             spreadsheetId,
-            range: 'A3:H', // Assuming there are no more than 1000 students, adjust as needed
+            range: 'A4:H',
         });
 
         const values = response.data.values;
