@@ -2,7 +2,7 @@
 
 This project was developed for the Tunts.Rocks 2024 challenge.
 
-To test the application, simply clone the project [here](https://github.com/GustavoMFS/DesafioTunts.git) to your desktop and install the required modules using the command **npm install**.
+To test the application, simply git clone this project: https://github.com/GustavoMFS/DesafioTunts.git to your desktop and install the required modules using the command **npm install**.
 
 To update the spreadsheet, run the following command in the terminal: **npm start**. After executing the command the data will be processed and the program will update the students situation and final exam grades.
 
